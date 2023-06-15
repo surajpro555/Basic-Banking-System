@@ -1,17 +1,16 @@
-//=====================================Backend-Part================================//
+/*
+=====================================Backend-Part================================//
+*/
+
 const express = require("express");
 const app = express();
-//hadle data from form
 const bodyParser = require("body-parser");
-//for connecting to database
 const mongoose = require("mongoose");
 const ejs = require("ejs");
 const date = require(__dirname + "/date.js");
-//for capitalize user name after singup
 const _ = require("lodash");
 const dotenv=require('dotenv').config()
 
-//for checking the form is submitted
 let result = false;
 let exits = false;
 let lowamount = false;
@@ -21,7 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 
-//connecting database with database
 (async function() {
   try {
     await mongoose.connect(process.env.MongoURL);
@@ -32,17 +30,16 @@ app.use(express.static("public"));
 })();
 
 
-//schema for user
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   balance: Number,
 });
 
-//make model of user
+
 const User = mongoose.model("User", userSchema);
 
-//creating dummy data for Users
+
 const user1 = new User({
   name: "Suraj Prajapati",
   email: "suraj111prajapati@gmail.com",
@@ -103,21 +100,9 @@ const user10 = new User({
   balance: 10000,
 });
 
-//made array of users 
-const userData = [
-  user1,
-  user2,
-  user3,
-  user4,
-  user5,
-  user6,
-  user7,
-  user8,
-  user9,
-  user10,
-];
 
-//if user collection is empty,then insert dummy data
+const userData = [user1,user2,user3,user4,user5,user6,user7,user8,user9,user10,];
+
 User.find()
   .then((foundItems) => {
     if (foundItems.length == 0) {
@@ -128,25 +113,24 @@ User.find()
   })
   .catch((err) => console.error(err));
 
-//transaction schema
 const transactionSchema = new mongoose.Schema({
   sender: String,
   receiver: String,
   amount: Number,
   date: String,
 });
-//make model of transaction
+
 const Transaction = mongoose.model("Transaction", transactionSchema);
-//dummy data for transaction
-const t1 = new Transaction({
+
+const t= new Transaction({
   sender: "Vivek Tiwari",
   receiver: "Suraj Prajapati",
   amount: 1000,
   date: date.getDate(),
 });
 
-const transactionData = [t1];
-//if transaction collection is empty,insert dummy transactions
+const transactionData = [t];
+
 Transaction.find()
   .then((foundItems) => {
     if (foundItems.length == 0) {
@@ -160,16 +144,15 @@ Transaction.find()
   .catch((err) => console.error(err));
 
 
-//home page render
+
 app.get("/", function (req, res) {
   res.render("home");
 });
 
-//customerlist page render,with customer name
+
 app.get("/customerlist", function (req, res) {
   User.find()
     .then((foundUsers) => {
-      //if new user register then this work
       if (result === true) {
         result = false;
         res.render("customerlist", {
@@ -178,9 +161,7 @@ app.get("/customerlist", function (req, res) {
           message: "welcome to VizBank",
         });
       }
-      // if user already present ,then directly goes to customerlist page with message
-      
-       else if (exits === true) {
+      else if (exits === true) {
         exits = false;
         res.render("customerlist", {
           customers: foundUsers,
@@ -205,7 +186,7 @@ app.get("/customerlist", function (req, res) {
     .catch((err) => console.error(err));
 });
 
-//render transaction page
+
 app.get("/transaction", function (req, res) {
   Transaction.find()
     .then((foundTransaction) => {
@@ -213,19 +194,17 @@ app.get("/transaction", function (req, res) {
     })
     .catch((err) => console.error(err));
 });
-//render contact page
+
+
 app.get("/contact", function (req, res) {
   res.render("contact");
 });
 
 
 
-
-//render to payment form
 app.get("/payment", function (req, res) {
   User.find()
   .then((foundUsers) => {
-    //if new user register then this work
     if (result === true) {
       result = false;
       res.render("payment", {
@@ -234,8 +213,6 @@ app.get("/payment", function (req, res) {
         message: "welcome to VizBank",
       });
     }
-    // if user already present ,then directly goes to customerlist page with message
-    
      else if (exits === true) {
       exits = false;
       res.render("payment", {
@@ -264,8 +241,6 @@ app.get("/payment", function (req, res) {
 app.post("/customerlist", async function (req, res) {
   try {
     const amount = parseInt(req.body.amount);
-
-    // Finding sender data
     const foundSender = await User.findOne({ name: req.body.sender });
     if (!foundSender || foundSender.balance <= amount) {
       console.log("Sender not found or balance insufficient");
@@ -274,7 +249,6 @@ app.post("/customerlist", async function (req, res) {
       return;
     }
 
-    // Finding receiver data
     const foundReceiver = await User.findOne({ name: req.body.receiver });
     if (!foundReceiver) {
       console.log("Receiver not found");
@@ -282,7 +256,6 @@ app.post("/customerlist", async function (req, res) {
       return;
     }
 
-    // Create new transaction
     const transaction = new Transaction({
       sender: req.body.sender,
       receiver: req.body.receiver,
@@ -292,14 +265,12 @@ app.post("/customerlist", async function (req, res) {
     await transaction.save();
     console.log("Transaction successful");
 
-    // Update sender balance
     const senderBalance = foundSender.balance - amount;
     await User.updateOne(
       { name: req.body.sender },
       { $set: { balance: senderBalance } }
     );
 
-    // Update receiver balance
     const receiverBalance = foundReceiver.balance + amount;
     await User.updateOne(
       { name: req.body.receiver },
@@ -315,7 +286,7 @@ app.post("/customerlist", async function (req, res) {
   }
 });
 
-//check for server is listen or not
+
 app.listen(3000 || process.env.PORT, function () {
   console.log("server started at port 3000");
 });
