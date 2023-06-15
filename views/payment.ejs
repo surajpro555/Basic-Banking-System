@@ -1,0 +1,23 @@
+<%- include("header")%>
+
+<center class="marging">
+  <form action="/customerlist" method="post" class="form">
+    <span class="signup">Money Transfer</span>
+      <select class="form--input" id="first-select" name="sender" onchange="updateSecondSelect()" required>
+        <option class="form--input" value="">Sender</option>
+        <%customers.forEach(function(customer){%>
+          <option value="<%=customer.name%>"><%=customer.name%></option>
+        <%})%>
+      </select>
+      <select class="form--input" id="second-select" name="receiver" required>
+        <option class="form--input" value="">Receiver</option>
+        <%customers.forEach(function(customer){%>
+          <option value="<%=customer.name%>"><%=customer.name%></option>
+        <%})%>
+      </select>
+    <input type="number" placeholder="Amount" class="form--input" name="amount" required>
+    <input type="submit" class="form--submit" value="Send Money">
+</form>
+</center>
+
+<%- include ("footer")%>
