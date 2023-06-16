@@ -1,16 +1,13 @@
-// ================================PAYMENT-FROM===========================//
 
 function updateSecondSelect() {
   const firstSelect = document.getElementById("first-select");
   const secondSelect = document.getElementById("second-select");
   const selectedValue = firstSelect.value;
 
-  // Enable all options in the second select
   for (let i = 0; i < secondSelect.options.length; i++) {
     secondSelect.options[i].disabled = false;
   }
 
-  // Disable the option with the same value as the selected value in the first select
   for (let i = 0; i < secondSelect.options.length; i++) {
     if (secondSelect.options[i].value === selectedValue) {
       secondSelect.options[i].disabled = true;
@@ -19,15 +16,9 @@ function updateSecondSelect() {
   }
 }
 
-//==================================END====================================//
-
-
 (function() {
   "use strict";
 
-  /**
-   * Easy selector helper function
-   */
   const select = (el, all = false) => {
     el = el.trim()
     if (all) {
@@ -37,9 +28,6 @@ function updateSecondSelect() {
     }
   }
 
-  /**
-   * Easy event listener function
-   */
   const on = (type, el, listener, all = false) => {
     let selectEl = select(el, all)
     if (selectEl) {
@@ -51,16 +39,10 @@ function updateSecondSelect() {
     }
   }
 
-  /**
-   * Easy on scroll event listener 
-   */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
   }
 
-  /**
-   * Navbar links active state on scroll
-   */
   let navbarlinks = select('#navbar .scrollto', true)
   const navbarlinksActive = () => {
     let position = window.scrollY + 200
@@ -78,9 +60,6 @@ function updateSecondSelect() {
   window.addEventListener('load', navbarlinksActive)
   onscroll(document, navbarlinksActive)
 
-  /**
-   * Scrolls to an element with header offset
-   */
   const scrollto = (el) => {
     let header = select('#header')
     let offset = header.offsetHeight
@@ -96,9 +75,6 @@ function updateSecondSelect() {
     })
   }
 
-  /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
   let selectHeader = select('#header')
   if (selectHeader) {
     const headerScrolled = () => {
@@ -112,9 +88,6 @@ function updateSecondSelect() {
     onscroll(document, headerScrolled)
   }
 
-  /**
-   * Back to top button
-   */
   let backtotop = select('.back-to-top')
   if (backtotop) {
     const toggleBacktotop = () => {
@@ -128,18 +101,12 @@ function updateSecondSelect() {
     onscroll(document, toggleBacktotop)
   }
 
-  /**
-   * Mobile nav toggle
-   */
   on('click', '.mobile-nav-toggle', function(e) {
     select('#navbar').classList.toggle('navbar-mobile')
     this.classList.toggle('bi-list')
     this.classList.toggle('bi-x')
   })
 
-  /**
-   * Mobile nav dropdowns activate
-   */
   on('click', '.navbar .dropdown > a', function(e) {
     if (select('#navbar').classList.contains('navbar-mobile')) {
       e.preventDefault()
@@ -147,9 +114,6 @@ function updateSecondSelect() {
     }
   }, true)
 
-  /**
-   * Scrool with ofset on links with a class name .scrollto
-   */
   on('click', '.scrollto', function(e) {
     if (select(this.hash)) {
       e.preventDefault()
@@ -165,9 +129,6 @@ function updateSecondSelect() {
     }
   }, true)
 
-  /**
-   * Scroll with ofset on page load with hash links in the url
-   */
   window.addEventListener('load', () => {
     if (window.location.hash) {
       if (select(window.location.hash)) {
@@ -176,9 +137,6 @@ function updateSecondSelect() {
     }
   });
 
-  /**
-   * Animation on scroll
-   */
   window.addEventListener('load', () => {
     AOS.init({
       duration: 1000,
@@ -187,6 +145,4 @@ function updateSecondSelect() {
       mirror: false
     })
   });
-
-
 })()
