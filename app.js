@@ -1,107 +1,96 @@
-/*
-=====================================Backend-Part================================//
-*/
-
+/*--------------------------------------------------------------
+                    Backend Library
+--------------------------------------------------------------*/
 const express = require("express");
-const app = express();
-const bodyParser = require("body-parser");
+const app=express();
 const mongoose = require("mongoose");
+const dotenv=require('dotenv').config();
 const ejs = require("ejs");
-const date = require(__dirname + "/date.js");
+const bodyParser = require("body-parser");
 const _ = require("lodash");
-const dotenv=require('dotenv').config()
-
-let result = false;
-let exits = false;
-let lowamount = false;
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-
-(async function() {
+/*--------------------------------------------------------------
+                    DATABASE CONNECTION
+--------------------------------------------------------------*/
+const database_conn=async function() {
   try {
     await mongoose.connect(process.env.MongoURL);
-    console.log("Connected to database");
+    console.log("Connection successful");
   } catch (err) {
-    console.error(err);
+    console.error('ERROR OCCURED...........\n',err);
   }
-})();
+};
+database_conn();
 
-
+/*--------------------------------------------------------------
+                     SCHEMA
+--------------------------------------------------------------*/
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   balance: Number,
 });
-
-
 const User = mongoose.model("User", userSchema);
 
-
-const user1 = new User({
-  name: "Suraj Prajapati",
-  email: "suraj111prajapati@gmail.com",
-  balance: 10000,
-});
-
-const user2 = new User({
-  name: "Vivek Tiwari",
-  email: "vivek222tiwari@gmail.com",
-  balance: 10000,
-});
-
-const user3 = new User({
-  name: "Sagar Singh",
-  email: "sagar333singh@gmail.com",
-  balance: 10000,
-});
-
-const user4 = new User({
-  name: "Abhi Upadhyay",
-  email: "abhi444Upadhyay@gmail.com",
-  balance: 10000,
-});
-
-const user5 = new User({
-  name: "Sai Kaushik",
-  email: "Sai555Kaushik@gmail.com",
-  balance: 10000
-});
-
-const user6 = new User({
-  name: "Jagjeet Singh",
-  email: "Jagjeet666Singh@gmail.com",
-  balance: 10000,
-});
-
-const user7 = new User({
-  name: "UjwaL RajPurohit",
-  email: "UjwaL777RajPurohit@gmail.com",
-  balance: 10000,
-});
-
-const user8 = new User({
-  name: "Harsh Tiwari",
-  email: "Harsh888Tiwari@gmail.com",
-  balance: 10000,
-});
-
-const user9 = new User({
-  name: "Umesh",
-  email: "umesh999@gmail.com",
-  balance: 10000,
-});
-
-const user10 = new User({
-  name: "Anand Tiwari",
-  email: "Anand101010Tiwari@gmail.com",
-  balance: 10000,
-});
-
-
-const userData = [user1,user2,user3,user4,user5,user6,user7,user8,user9,user10,];
+/*--------------------------------------------------------------
+                   10-DUMMY DATA
+--------------------------------------------------------------*/
+const userData = [
+  {
+    name: "Suraj Prajapati",
+    email: "suraj111prajapati@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Vivek Tiwari",
+    email: "vivek222tiwari@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Sagar Singh",
+    email: "sagar333singh@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Abhi Upadhyay",
+    email: "abhi444Upadhyay@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Sai Kaushik",
+    email: "Sai555Kaushik@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Jagjeet Singh",
+    email: "Jagjeet666Singh@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "UjwaL RajPurohit",
+    email: "UjwaL777RajPurohit@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Harsh Tiwari",
+    email: "Harsh888Tiwari@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Umesh",
+    email: "umesh999@gmail.com",
+    balance: 10000,
+  },
+  {
+    name: "Anand Tiwari",
+    email: "Anand101010Tiwari@gmail.com",
+    balance: 10000,
+  },
+];
 
 User.find()
   .then((foundItems) => {
@@ -122,33 +111,24 @@ const transactionSchema = new mongoose.Schema({
 
 const Transaction = mongoose.model("Transaction", transactionSchema);
 
-const t= new Transaction({
-  sender: "Vivek Tiwari",
-  receiver: "Suraj Prajapati",
-  amount: 1000,
-  date: date.getDate(),
-});
+/*--------------------------------------------------------------
+                    DATE FUNCTION
+--------------------------------------------------------------*/
+const getDate=function()
+{
+  let today=new Date();
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' ,hour:"numeric",minute:"numeric"};//for using time data ij js
+  return today.toLocaleDateString("en-US",options);
+}
 
-const transactionData = [t];
-
-Transaction.find()
-  .then((foundItems) => {
-    if (foundItems.length == 0) {
-      Transaction.insertMany(transactionData)
-        .then(() =>
-          console.log("inserted dummy data in Transaction collection")
-        )
-        .catch((err) => console.error(err));
-    }
-  })
-  .catch((err) => console.error(err));
-
-
+/*--------------------------------------------------------------
+                    RENDERING PAGES
+--------------------------------------------------------------*/
+let result = false,isavailable = false,lessamount= false;
 
 app.get("/", function (req, res) {
   res.render("home");
 });
-
 
 app.get("/customerlist", function (req, res) {
   User.find()
@@ -158,18 +138,18 @@ app.get("/customerlist", function (req, res) {
         res.render("customerlist", {
           customers: foundUsers,
           i: 1,
-          message: "welcome to VizBank",
+          message: "Welcome to VizBank",
         });
       }
-      else if (exits === true) {
-        exits = false;
+      else if (isavailable === true) {
+        isavailable = false;
         res.render("customerlist", {
           customers: foundUsers,
           i: 1,
           message: "user already exist!",
         });
-      } else if (lowamount === true) {
-        lowamount = false;
+      } else if (lessamount=== true) {
+        lessamount= false;
         res.render("customerlist", {
           customers: foundUsers,
           i: 1,
@@ -196,10 +176,9 @@ app.get("/transaction", function (req, res) {
 });
 
 
-app.get("/contact", function (req, res) {
-  res.render("contact");
+app.get("/about", function (req, res) {
+  res.render("about");
 });
-
 
 
 app.get("/payment", function (req, res) {
@@ -213,15 +192,15 @@ app.get("/payment", function (req, res) {
         message: "welcome to VizBank",
       });
     }
-     else if (exits === true) {
-      exits = false;
+     else if (isavailable === true) {
+      isavailable = false;
       res.render("payment", {
         customers: foundUsers,
         i: 1,
         message: "user already exist!",
       });
-    } else if (lowamount === true) {
-      lowamount = false;
+    } else if (lessamount=== true) {
+      lessamount= false;
       res.render("payment", {
         customers: foundUsers,
         i: 1,
@@ -238,21 +217,32 @@ app.get("/payment", function (req, res) {
   .catch((err) => console.error(err));
 });
 
+
+app.get("/failed", function (req, res) {
+  const message = req.query.message || "Payment Failed";
+  res.render("failed", { message: message });
+});
+
+app.get("/successful", function (req, res) {
+  const message = req.query.message || "Payment successful";
+  res.render("successful", { message: message });
+});
+
+
 app.post("/customerlist", async function (req, res) {
   try {
     const amount = parseInt(req.body.amount);
     const foundSender = await User.findOne({ name: req.body.sender });
     if (!foundSender || foundSender.balance <= amount) {
-      console.log("Sender not found or balance insufficient");
-      lowamount = true;
-      res.redirect("/customerlist");
+      const message = "Insufficient balance ";
+      res.redirect(`/failed?message=${message}`);
       return;
     }
 
     const foundReceiver = await User.findOne({ name: req.body.receiver });
     if (!foundReceiver) {
-      console.log("Receiver not found");
-      res.redirect("/customerlist");
+      const message = "Invalid Receiver Name";
+      res.redirect(`/failed?message=${message}`);
       return;
     }
 
@@ -260,7 +250,7 @@ app.post("/customerlist", async function (req, res) {
       sender: req.body.sender,
       receiver: req.body.receiver,
       amount: amount,
-      date: date.getDate(),
+      date: getDate(),
     });
     await transaction.save();
     console.log("Transaction successful");
@@ -276,17 +266,21 @@ app.post("/customerlist", async function (req, res) {
       { name: req.body.receiver },
       { $set: { balance: receiverBalance } }
     );
-
-    console.log(`Sender balance updated to ${senderBalance}`);
-    console.log(`Receiver balance updated to ${receiverBalance}`);
-    res.redirect("/customerlist");
+    const sName=req.body.sender;
+    const rName=req.body.receiver;
+    const amt=req.body.amount
+    const message =`${sName} have successfully transfered ${amt} to ${rName}`;
+    res.redirect(`/successful?message=${message}`);
   } catch (err) {
     console.error(err);
-    res.redirect("/customerlist");
+    const message = "An error occurred";
+    res.redirect(`/failed?message=${message}`);
   }
 });
 
-
+/*--------------------------------------------------------------
+                     SERVER at PORT
+--------------------------------------------------------------*/
 app.listen(3000 || process.env.PORT, function () {
   console.log("server started at port 3000");
 });

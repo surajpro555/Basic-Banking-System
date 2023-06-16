@@ -2,7 +2,7 @@
 <%- include("header")%>
 
 <center>
-<a class="nav-link" href="/payment">
+<a href="/payment">
 <button class="marging">
   <div class="svg-wrapper-1">
     <div class="svg-wrapper">
@@ -17,32 +17,17 @@
 </a>
 </center>
 
-<br>
-<br><hr>
-<section style="margin-bottom: 10%;">
-  <center><h2 class="customerlist-heading">CUSTOMER LIST</h2></center>
-  <hr>
-  <table class="table table-striped customerlist-table">
-    <thead>
-      <tr>
-        <th>S.no.</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Balance</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%customers.forEach(function(customer){%>
-        <tr>
-          <td><%=i%></td>
-          <td><%=customer.name%></td>
-          <td><%=customer.email%></td>
-          <td><%=customer.balance%></td>
-        </tr>
-        <%i++;%>
-      <%})%>
-    </tbody>
-  </table>
-</section>
+<center><h2 style="padding-top:3%;"><hr>CUSTOMER LIST<hr></h2></center>
+  <div class="card-container">
+    <% customers.forEach(function(customer) { %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= customer.name %></h5>
+          <p class="card-text">Email: <%= customer.email %></p>
+          <p class="card-text">Balance: <%= customer.balance %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
 
 <%- include ("footer")%>

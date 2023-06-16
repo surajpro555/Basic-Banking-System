@@ -1,0 +1,12 @@
+<%- include("header")%>
+
+  <div class="container-failed">
+    <div class="payment-failed">
+      <h2>Payment Failed</h2>
+      <p><%= typeof message !== 'undefined' ? message : '' %></p>
+      <p>Sorry, your payment could not be processed.</p>
+      <a href="/customerlist"><button>Click Here to Go Back</button></a>
+    </div>    
+  </div>
+
+  <%- include ("footer")%>

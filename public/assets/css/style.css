@@ -66,7 +66,8 @@ h1,h2,h3,h4,h5,h6 {
   z-index: 997;
   transition: all 0.5s;
   padding: 22px 0;
-  background: #dedbdb;
+  background: #ffffff;
+  border-bottom: 1px solid #918a8a;
 }
 
 #header.header-scrolled {
@@ -405,7 +406,6 @@ button:active {
 /*--------------------------------------------------------------
                               MONEY FORM
 --------------------------------------------------------------*/
-
 .form {
   margin-top: 10%;
   background-color: white;
@@ -413,10 +413,10 @@ button:active {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  margin-left: 25%;
-  margin-right: 25%;
+  margin-left: 30%;
+  margin-right: 30%;
   align-items: center;
-  box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+  box-shadow: 5px 5px 15px -1px rgba(0, 0, 0, 0.75);
 }
 
 .signup {
@@ -427,6 +427,7 @@ button:active {
   font-weight: bold;
   font-size: x-large;
   margin-bottom: 0.5em;
+  text-align: center;
 }
 
 .form--input {
@@ -435,7 +436,7 @@ button:active {
   height: 40px;
   border-radius: 5px;
   border: 1px solid gray;
-  padding: 0.4rem;;
+  padding: 0.4rem;
   font-family: 'Inter', sans-serif;
   outline: none;
 }
@@ -445,22 +446,16 @@ button:active {
   outline: none;
 }
 
-.form--marketing {
+.form--group {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 1.25em;
-  align-items: center;
 }
 
-.form--marketing > input {
-  margin-right: 0.625em;
-}
-
-.form--marketing > label {
+.form--label {
   color: grey;
-}
-
-.checkbox, input[type="checkbox"] {
-  accent-color: #639;
+  margin-bottom: 0.25em;
 }
 
 .form--submit {
@@ -481,6 +476,25 @@ button:active {
   transition: 0.5s;
 }
 
+@media only screen and (max-width: 768px) {
+  .form {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  .form--submit {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .form {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+
+
 /*--------------------------------------------------------------
                             Extra Marging
 --------------------------------------------------------------*/
@@ -493,4 +507,113 @@ button:active {
   .marging{
       margin-top: 30%;
    }
+}
+
+/*--------------------------------------------------------------
+                          CARD
+--------------------------------------------------------------*/
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.card {
+  flex-basis: calc(50% - 20px);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 767px) {
+  .card {
+    flex-basis: calc(100% - 20px);
+  }
+}
+
+/*--------------------------------------------------------------
+                          PAYMENT-FAILED
+--------------------------------------------------------------*/
+.container-failed {
+  max-width: 500px;
+  margin: 10% auto;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container-failed h2 {
+  font-size: 24px;
+  color: #ff0000;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.container-failed p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.container-failed button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.container-failed button:hover {
+  background-color: #57aae1;
+}
+
+@media (max-width: 600px) {
+  .container-failed {
+    margin: 150px auto;
+    padding: 20px;
+  }
+
+  .container-failed h2 {
+    font-size: 20px;
+  }
+
+  .container-failed p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
+
+.successful{
+    height: 60px;
+    width: 60px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+    .successful{
+    height: 40px;
+    width: 40px;
+}
 }

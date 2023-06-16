@@ -1,0 +1,12 @@
+<%- include("header")%>
+
+  <div class="container-failed">
+    <div class="payment-failed">
+       <center><img src="assets/img/payment_successful.png" class="successful"></center>
+      <h2>Payment Sucessful</h2>
+      <p><%= typeof message !== 'undefined' ? message : '' %></p>
+      <a href="/customerlist"><button>Click Here to Go Back</button></a>
+    </div>    
+  </div>
+
+  <%- include ("footer")%>

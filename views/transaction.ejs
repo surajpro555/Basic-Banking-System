@@ -1,7 +1,6 @@
 
 <%- include("header")%>
-
-<section class="marging">
+<section class="marging" style="margin-bottom: 5%;">
   <center><h2>TRANSACTION HISTORY</h2></center>
   <HR>
     <table class="table table-striped customerlist-table">
@@ -15,7 +14,6 @@
         </tr>
       </thead>
       <tbody>
-        
         <%transactions.forEach(function(transaction){%>
           <tr>
             <td><%=i%></td>
@@ -24,10 +22,8 @@
             <td><%=transaction.amount%></td>
             <td><%=transaction.date%></td>
           </tr>
-          
           <%i++;%>
         <%})%>
-        
       </tbody>
     </table>
 </section>
