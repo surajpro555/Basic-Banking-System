@@ -170,7 +170,7 @@ app.get("/customerlist", function (req, res) {
 app.get("/transaction", function (req, res) {
   Transaction.find()
     .then((foundTransaction) => {
-      res.render("transaction", { transactions: foundTransaction, i: 1 });
+      res.render("transaction", { transactions: foundTransaction.reverse(), i: 1 });
     })
     .catch((err) => console.error(err));
 });

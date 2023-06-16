@@ -16,7 +16,7 @@
       <tbody>
         <%transactions.forEach(function(transaction){%>
           <tr>
-            <td><%=i%></td>
+            <td><%=transactions.length-i+1%></td>
             <td><%=transaction.sender%></td>
             <td><%=transaction.receiver%></td>
             <td><%=transaction.amount%></td>
